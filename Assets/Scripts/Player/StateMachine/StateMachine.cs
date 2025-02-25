@@ -19,22 +19,22 @@ namespace Player.StateMachine
         
         public CharacterController CharacterController {get; private set;}
         private readonly Animator _playerAnimator;
-        private readonly InputReader _inputReader;
+        private readonly InputController _inputController;
 
         public StateMachine(
             CharacterController characterController,
             Animator playerAnimator, 
-            InputReader inputReader)
+            InputController inputController)
         {
             CharacterController = characterController;
             _playerAnimator = playerAnimator;
-            _inputReader = inputReader;
+            _inputController = inputController;
         }
         
         public void Initialize()
         {
             
-            IdleState = new IdleState("idleState", this, _playerAnimator, _inputReader,"idle");
+            IdleState = new IdleState("idleState", this, _playerAnimator, _inputController,"idle");
             MoveState = new MoveState("moveState", this, _playerAnimator, "walk");
             IdleJumpState = new IdleJumpState("idleJumpState", this, _playerAnimator, "idleJump");
             MoveJumpState = new MoveJumpState("moveJumpState", this, _playerAnimator, "moveJump");

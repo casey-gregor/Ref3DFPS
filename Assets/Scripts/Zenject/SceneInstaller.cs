@@ -14,7 +14,7 @@ namespace Zenject
             Container.BindInterfacesAndSelfTo<ListenersStorage>().AsSingle();
             Container.BindInterfacesAndSelfTo<GameManager>().FromComponentsInHierarchy().AsSingle();
             Container.Bind<PlayerInput>().FromInstance(playerInput).AsSingle();
-            Container.BindInterfacesAndSelfTo<InputReader>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<InputController>().AsSingle().NonLazy();
         }
     }
 }

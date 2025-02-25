@@ -11,7 +11,7 @@ namespace Player
     {
         private readonly CharacterController _characterController;
         private readonly AnimationEventDispatcher _animationEventDispatcher;
-        private readonly InputReader _inputReader;
+        private readonly InputController _inputController;
         
         private readonly float _jumpHeight;
         private readonly float _gravity;
@@ -23,13 +23,13 @@ namespace Player
         public PlayerJumpComponent(
             CharacterController characterController,
             AnimationEventDispatcher animationEventDispatcher,
-            InputReader inputReader,
+            InputController inputController,
             float jumpHeight,
             float gravity)
         {
             _characterController = characterController;
             _jumpHeight = jumpHeight;
-            _inputReader = inputReader;
+            _inputController = inputController;
             _animationEventDispatcher = animationEventDispatcher;
             _gravity = gravity;
         }

@@ -8,28 +8,44 @@ namespace Player
 {
     public class PlayerMoveComponent : IGameUpdateListener
     {
+        public Vector3 HorizontalDirection { get; private set; }
+        private Vector3 _tempDirection;
+        
         private readonly CharacterController _characterController;
-        private readonly InputReader _inputReader;
+        private readonly InputController _inputController;
         private readonly float _playerSpeed;
         
 
         public PlayerMoveComponent(
             CharacterController characterController, 
-            float playerSpeed, 
-            InputReader inputReader)
+            float playerSpeed,
+            InputController inputController)
         {
             _characterController = characterController;
-            _inputReader = inputReader;
             _playerSpeed = playerSpeed;
+            _inputController = inputController;
         }
 
         public void OnUpdate(float deltaTime)
         {
             if (_characterController.isGrounded)
             {
-                Vector3 horizontalMovement = new Vector3(_inputReader.MoveDirection.x, 0, _inputReader.MoveDirection.y);
-                _characterController.Move(horizontalMovement * (_playerSpeed * deltaTime));
+                AdjustHorizontalDirection();
+                _characterController.Move(HorizontalDirection * (_playerSpeed * deltaTime));
             }
+        }
+
+        private void AdjustHorizontalDirection()
+        {
+            float speed = CheckIfRunning() ? 1 : 0.5f;
+            _tempDirection.x = Mathf.Clamp(_inputController.HorizontalDirection.x, -speed, speed);
+            _tempDirection.z = Mathf.Clamp(_inputController.HorizontalDirection.z, -speed, speed);
+            HorizontalDirection = _tempDirection;
+        }
+
+        private bool CheckIfRunning()
+        {
+            return _inputController.RunPressed;
         }
     }
 }

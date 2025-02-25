@@ -5,9 +5,9 @@ using Zenject;
 
 namespace DefaultNamespace
 {
-    public class InputReader : IInitializable, IDisposable
+    public class InputController : IInitializable, IDisposable
     {
-        public Vector2 MoveDirection {get; private set;}
+        public Vector3 HorizontalDirection {get; private set;}
         
         public float HorizontalLookAxis {get; private set;}
         public float VerticalLookAxis {get; private set;}
@@ -39,7 +39,7 @@ namespace DefaultNamespace
         
 
         [Inject]
-        public InputReader(PlayerInput playerInput)
+        public InputController(PlayerInput playerInput)
         {
             _moveAction = playerInput.actions["Move"];
             _lookAction = playerInput.actions["Look"];
@@ -58,10 +58,13 @@ namespace DefaultNamespace
             _moveAction.performed += ReadMovementInput;
             _moveAction.canceled += ResetMovementInput;
             _lookAction.performed += ReadLookInput;
+            _lookAction.canceled += ResetLookInput;
             _jumpAction.performed += ReadJumpInput;
             _jumpAction.canceled += ResetJumpInput;
             _runAction.performed += ReadRunInput;
+            _runAction.canceled += ResetRunInput;
             _fireAction.performed += ReadFireInput;
+            _fireAction.canceled += ResetFireInput;
             _weaponZoomAction.performed += ReadWeaponZoomInput;
             _nextWeaponAction.performed += ReadNextWeaponInput;
             _previousWeaponAction.performed += ReadPreviousWeaponInput;
@@ -74,9 +77,11 @@ namespace DefaultNamespace
             _moveAction.performed -= ReadMovementInput;
             _moveAction.canceled -= ResetMovementInput;
             _lookAction.performed -= ReadLookInput;
+            _lookAction.canceled -= ResetLookInput;
             _jumpAction.canceled -= ResetJumpInput;
             _jumpAction.performed -= ReadJumpInput;
             _runAction.performed -= ReadRunInput;
+            _runAction.canceled += ResetRunInput;
             _fireAction.performed -= ReadFireInput;
             _weaponZoomAction.performed -= ReadWeaponZoomInput;
             _nextWeaponAction.performed -= ReadNextWeaponInput;
@@ -87,12 +92,12 @@ namespace DefaultNamespace
 
         private void ReadMovementInput(InputAction.CallbackContext context)
         {
-            MoveDirection = context.ReadValue<Vector2>();
+            HorizontalDirection = new Vector3(context.ReadValue<Vector2>().x, 0, context.ReadValue<Vector2>().y);
         }
 
         private void ResetMovementInput(InputAction.CallbackContext context)
         {
-            MoveDirection = Vector2.zero;
+            HorizontalDirection = Vector3.zero;
         }
 
         private void ReadLookInput(InputAction.CallbackContext context)
@@ -100,6 +105,12 @@ namespace DefaultNamespace
             Vector2 inputVector = context.ReadValue<Vector2>();
             HorizontalLookAxis = inputVector.x;
             VerticalLookAxis = inputVector.y;
+        }
+
+        private void ResetLookInput(InputAction.CallbackContext context)
+        {
+            HorizontalLookAxis = 0;
+            VerticalLookAxis = 0;
         }
         
         private void ReadJumpInput(InputAction.CallbackContext context)
@@ -117,9 +128,19 @@ namespace DefaultNamespace
             RunPressed = !context.canceled;
         }
 
+        private void ResetRunInput(InputAction.CallbackContext context)
+        {
+            RunPressed = false;
+        }
+        
         private void ReadFireInput(InputAction.CallbackContext context)
         {
             FirePressed = !context.canceled;
+        }
+        
+        private void ResetFireInput(InputAction.CallbackContext context)
+        {
+            FirePressed = false;
         }
         
         private void ReadWeaponZoomInput(InputAction.CallbackContext context)
@@ -154,5 +175,6 @@ namespace DefaultNamespace
         {
             PausePressed = !context.canceled;
         }
+        
     }
 }

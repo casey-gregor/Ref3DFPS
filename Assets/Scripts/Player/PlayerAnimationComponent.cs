@@ -8,16 +8,19 @@ namespace Player
     {
         private readonly Animator _animator;
         private readonly CharacterController _characterController;
-        private readonly InputReader _inputReader;
+        private readonly InputController _inputController;
+        private PlayerMoveComponent _playerMoveComponent;
 
         public PlayerAnimationComponent(
             Animator animator,
             CharacterController characterController,
-            InputReader inputReader)
+            InputController inputController, 
+            PlayerMoveComponent playerMoveComponent)
         {
             _animator = animator;
             _characterController = characterController;
-            _inputReader = inputReader;
+            _inputController = inputController;
+            _playerMoveComponent = playerMoveComponent;
         }
         
         public void OnUpdate(float deltaTime)
@@ -31,9 +34,9 @@ namespace Player
             if (_characterController.isGrounded)
             {
                 ToggleIsGrounded(true);
-                if (_inputReader.MoveDirection == Vector2.zero)
+                if (_inputController.HorizontalDirection == Vector3.zero)
                 {
-                    if (_inputReader.JumpPressed)
+                    if (_inputController.JumpPressed)
                     {
                         SwitchOnIdleJump();
                         SwitchOffGroundMovement();
@@ -45,7 +48,7 @@ namespace Player
                     }
                    
                 }
-                else if(_inputReader.JumpPressed)
+                else if(_inputController.JumpPressed)
                 {
                     SwitchOffGroundMovement();
                     SwitchOnMoveJump();
@@ -108,8 +111,8 @@ namespace Player
 
         private void SetAnimationBlendTreeFloats(float deltaTime)
         {
-            _animator.SetFloat("vertical", _inputReader.MoveDirection.y, 0.1f, deltaTime);
-            _animator.SetFloat("horizontal", _inputReader.MoveDirection.x, 0.1f, deltaTime);
+            _animator.SetFloat("horizontal", _playerMoveComponent.HorizontalDirection.x, 0.1f, deltaTime);
+            _animator.SetFloat("vertical", _playerMoveComponent.HorizontalDirection.z, 0.1f, deltaTime);
         }
     }
 }
