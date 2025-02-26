@@ -1,3 +1,4 @@
+name: Build project
 uses: game-ci/unity-builder@v4
   env:
     UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -5,6 +6,7 @@ uses: game-ci/unity-builder@v4
     UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
   with:
     targetPlatform: WebGL
+    buildMethod: UnityBuilderAction.BuildScript.Build
 
 uses: actions/upload-artifact@v3
   with:
