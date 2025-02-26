@@ -12,6 +12,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           lfs: true
+      - name: Debug - List repository contents
+        run: ls -R
 
       # Build
       - name: Build project
