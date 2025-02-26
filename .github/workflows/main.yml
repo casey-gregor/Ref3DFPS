@@ -7,7 +7,7 @@ jobs:
     name: Build my project ✨
     runs-on: ubuntu-latest
     steps:
-    - name: Debug Secrets
+      - name: Debug Secrets
         run: |
           echo "Checking Unity License..."
           if [ -z "${{ secrets.UNITY_LICENSE }}" ]; then 
