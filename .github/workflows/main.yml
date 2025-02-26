@@ -1,14 +1,30 @@
-name: Build project
-uses: game-ci/unity-builder@v4
-  env:
-    UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-    UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-    UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-  with:
-    targetPlatform: WebGL
-    buildMethod: UnityBuilderAction.BuildScript.Build
+name: Actions 😎
 
-uses: actions/upload-artifact@v3
-  with:
-    name: 3DFPS-Build
-    path: build
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Build my project ✨
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      # Build
+      - name: Build project
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: WebGL
+
+      # Output
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Build
+          path: build
