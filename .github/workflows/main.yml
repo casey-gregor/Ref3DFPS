@@ -7,6 +7,16 @@ jobs:
     name: Build my project ✨
     runs-on: ubuntu-latest
     steps:
+    - name: Debug Secrets
+        run: |
+          echo "Checking Unity License..."
+          if [ -z "${{ secrets.UNITY_LICENSE }}" ]; then 
+            echo "❌ UNITY_LICENSE is not set in GitHub Secrets"; 
+            exit 1; 
+          else 
+            echo "✅ UNITY_LICENSE is available";
+          fi
+
       - name: Debug Secrets
         run: |
           echo "Checking Unity License..."
