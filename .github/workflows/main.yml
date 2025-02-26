@@ -7,6 +7,20 @@ jobs:
     name: Build my project ✨
     runs-on: ubuntu-latest
     steps:
+      - name: Debug Secrets
+        run: |
+          echo "Checking Unity License..."
+          if [ -z "$UNITY_LICENSE" ]; then echo "❌ UNITY_LICENSE is not set"; exit 1; fi
+          echo "✅ UNITY_LICENSE is set"
+  
+          echo "Checking Unity Email..."
+          if [ -z "$UNITY_EMAIL" ]; then echo "❌ UNITY_EMAIL is not set"; exit 1; fi
+          echo "✅ UNITY_EMAIL is set"
+  
+          echo "Checking Unity Password..."
+          if [ -z "$UNITY_PASSWORD" ]; then echo "❌ UNITY_PASSWORD is not set"; exit 1; fi
+          echo "✅ UNITY_PASSWORD is set"
+
       # Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v4
